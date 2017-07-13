@@ -1,6 +1,3 @@
-require('dotenv-extended').load();
-
-
 var restify = require('restify');
 var builder = require('botbuilder');
 
@@ -14,8 +11,10 @@ var botConnectorOptions = {
 var connector = new builder.ChatConnector(botConnectorOptions);
 var bot = new builder.UniversalBot(connector);
 
-server.listen(process.env.port || 3978, function () {
-    console.log('%s listening to %s', server.name, server.url); 
+bot.dialog('/', function (session) {
+    
+    //respond with user's message
+    session.send("You said " + session.message.text);
 });
 
 // Setup Restify Server
@@ -30,12 +29,6 @@ server.get(/.*/, restify.serveStatic({
 	'default': 'index.html'
 }));
 
-
-
-bot.dialog('/', function (session) {
-    
-    //respond with user's message
-    session.send("You said " + session.message.text);
+server.listen(process.env.port || 3978, function () {
+    console.log('%s listening to %s', server.name, server.url); 
 });
-
-
